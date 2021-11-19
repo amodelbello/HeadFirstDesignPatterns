@@ -7,6 +7,11 @@ import com.adb.decorator.Coffee.HouseBlend;
 import com.adb.decorator.Condiment.Mocha;
 import com.adb.decorator.Condiment.Soy;
 import com.adb.decorator.Condiment.Whip;
+import com.adb.factory.APizza;
+import com.adb.factory.PizzaStore;
+import com.adb.factory.PizzaType;
+import com.adb.factory.Store.ChicagoPizzaStore;
+import com.adb.factory.Store.NYPizzaStore;
 import com.adb.observer.Display.CurrentConditionsDisplay;
 import com.adb.observer.Display.ForecastDisplay;
 import com.adb.observer.Display.StatisticsDisplay;
@@ -18,9 +23,21 @@ import com.adb.strategy.ModelDuck;
 
 public class App {
   public static void main(String[] args) {
-    //    runStrategy();
+    runFactory();
+    //    runDecorator();
     //    runObserver();
-    runDecorator();
+    //    runStrategy();
+  }
+
+  public static void runFactory() {
+    PizzaStore nyStore = new NYPizzaStore();
+    PizzaStore chicagoStore = new ChicagoPizzaStore();
+
+    APizza pizza = nyStore.orderPizza(PizzaType.CHEESE);
+    System.out.println("Ethan ordered a " + pizza.getName() + "\n");
+
+    pizza = chicagoStore.orderPizza(PizzaType.CHEESE);
+    System.out.println("Joel ordered a " + pizza.getName() + "\n");
   }
 
   public static void runDecorator() {
@@ -41,17 +58,6 @@ public class App {
     System.out.println(beverage3.getDescription() + " $" + beverage3.cost());
   }
 
-  public static void runStrategy() {
-    Duck mallard = new MallardDuck();
-    mallard.performQuack();
-    mallard.performFly();
-
-    Duck model = new ModelDuck();
-    model.performFly();
-    model.setFlyBehavior(new FlyRocketPowered());
-    model.performFly();
-  }
-
   public static void runObserver() {
     WeatherData weatherData = new WeatherData();
 
@@ -67,5 +73,16 @@ public class App {
 
     System.out.println("");
     weatherData.setMeasurements(78, 90, 29.2f);
+  }
+
+  public static void runStrategy() {
+    Duck mallard = new MallardDuck();
+    mallard.performQuack();
+    mallard.performFly();
+
+    Duck model = new ModelDuck();
+    model.performFly();
+    model.setFlyBehavior(new FlyRocketPowered());
+    model.performFly();
   }
 }
